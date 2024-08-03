@@ -1,0 +1,1 @@
+Hi, This is a repository where I am storing some scripts for convenience for the Unicode project in Infinite Craft. I will provide a brief explanation of how to use both scripts in this document. (just wait a sec)
