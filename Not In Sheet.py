@@ -1,5 +1,6 @@
 import json
 import csv
+import glob
 
 class FileData():
     def __init__(self, json_file, csv_files):
@@ -28,9 +29,26 @@ class FileData():
             for name, unicode_hex in self.unobtained_characters:
                 f.write(f'{name}: {unicode_hex}\n')
 
+
+def find_files():
+    files = []
+    json_files = glob.glob('*.json')
+    if not json_files:
+        raise FileNotFoundError("No JSON file found in the current directory.")
+    
+    print(f"JSON file detected: \"{json_files[0]}\", this will be used as the savefile.\n")
+    
+    csv_files = glob.glob('*.csv')
+    if not csv_files:
+        raise FileNotFoundError("No CSV file found in the current directory.")
+
+    for file in csv_files:
+        print(f"CSV file detected: \"{file}\", this will be used as part of the database to compare against.\n")
+        
+    return json_files[0], csv_files  # Return the first JSON file found
+
 def main():
-    json_file = 'infinitecraft (94).json'
-    csv_files = ['Unicode Characters (1).csv', 'CJK Unified Ideographs (1).csv', 'Hangul (1).csv']  # List of CSV files
+    json_file, csv_files = find_files()
     filedata = FileData(json_file, csv_files)
 
 if __name__ == '__main__':
