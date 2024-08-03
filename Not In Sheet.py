@@ -1,6 +1,8 @@
+import tkinter as tk
+from tkinter import filedialog
 import json
 import csv
-import glob
+import os
 
 class FileData():
     def __init__(self, json_file, csv_files):
@@ -29,27 +31,41 @@ class FileData():
             for name, unicode_hex in self.unobtained_characters:
                 f.write(f'{name}: {unicode_hex}\n')
 
+def select_files(filetypes):
+    """Open a file dialog to select multiple files and return a list of file paths."""
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    file_paths = filedialog.askopenfilenames(filetypes=filetypes)
+    return file_paths
+
 
 def find_files():
-    files = []
-    json_files = glob.glob('*.json')
-    if not json_files:
-        raise FileNotFoundError("No JSON file found in the current directory.")
-    
-    print(f"JSON file detected: \"{json_files[0]}\", this will be used as the savefile.\n")
-    
-    csv_files = glob.glob('*.csv')
-    if not csv_files:
-        raise FileNotFoundError("No CSV file found in the current directory.")
+    file_paths = select_files([("All files", "*.*")])
+    json_filename = ''
+    csv_filenames = []
+    if not file_paths:
+        print("No files selected.")
+        return
 
-    for file in csv_files:
-        print(f"CSV file detected: \"{file}\", this will be used as part of the database to compare against.\n")
-        
-    return json_files[0], csv_files  # Return the first JSON file found
+    # Process each selected file
+    for file_path in file_paths:
+        _, ext = os.path.splitext(file_path)
+        if ext.lower() == '.json':
+            json_filename = file_path
+        elif ext.lower() == '.csv':
+            csv_filenames.append(file_path)
+        else:
+            print(f"Unsupported file type: {file_path}")
+    if not json_filename:
+        raise FileNotFoundError("No JSON selected.")
+    if not csv_filenames:
+        raise FileNotFoundError("No CSV selected.")
+
+    return json_filename, csv_filenames
 
 def main():
-    json_file, csv_files = find_files()
-    filedata = FileData(json_file, csv_files)
+    json_filename, csv_filenames = find_files()
+    filedata = FileData(json_filename, csv_filenames)
 
 if __name__ == '__main__':
     main()
