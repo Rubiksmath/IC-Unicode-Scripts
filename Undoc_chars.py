@@ -17,7 +17,7 @@ class FileData():
         self.check_characters()
 
     def check_characters(self):
-        json_uni_chars = set(i for i in self.raw_data['recipes'])
+        json_uni_chars = {i for i in self.raw_data['recipes']} | {i['text'] for i in self.raw_data['elements']}
 
         for csv_file in self.csv_files:
             with open(csv_file, 'r', encoding='utf-8') as f:
@@ -70,7 +70,7 @@ def find_files():
         elif ext.lower() == '.csv':
             csv_filenames.append(file_path)
         else:
-            print(f"Unsupported file type: {file_path}")
+            print(f"Ignoring non-JSON and non-CSV file: {file_path}")
     if not json_filename:
         raise FileNotFoundError("No JSON selected.")
     if not csv_filenames:
