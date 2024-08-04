@@ -1,5 +1,5 @@
 # Welcome
-Hi, This is a repository where I am storing some scripts for convenience for the Unicode project in Infinite Craft. I will provide a brief explanation of how to use both scripts in this document.\\
+Hi, This is a repository where I am storing some scripts for convenience for the Unicode project in Infinite Craft. I will provide a brief explanation of how to use both scripts in this document.
 ## Undoc_chars
 This file tells you all the characters you have in your save that aren't in the sheet.
 To use this file, simply run it either from command line (with `python undoc_chars.py`) or with an IDE like IDLE or Visual Studio by clicking run. A window should then pop up asking you which files you want to use for the search. 
