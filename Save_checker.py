@@ -1,4 +1,7 @@
 import json
+import tkinter as tk
+from tkinter import filedialog
+import os
 
 class FileData():
     
@@ -27,7 +30,7 @@ class FileData():
                 self.charlistelements[ord(name)] = name, discovered
 
         self.sortedcharlist = sorted(list(self.charlistrecipes.items()), key = lambda x: x[0])
-        print(f"You have {self.total_unicodes} unicode characters!")
+        print(f"You have {self.total_unicodes} unicode characters!\n")
 
 
 
@@ -68,6 +71,37 @@ class FileData():
             ctr2 = self.perform_search(nstart, nend, onlydiscovered)
             print(f'{ctr2} unicode characters found in your save between U+{nstart:04x} and U+{nend - 1:04x}{discoverstring}')
 
+
+def select_file(filetypes):
+    """Open a file dialog to select multiple files and return a list of file paths."""
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    file_paths = filedialog.askopenfilenames(filetypes=filetypes)
+    return file_paths
+
+
+def find_files():
+    file_paths = select_file([("Json File", "*.json")])
+    json_filename = ''
+    if not file_paths:
+        print("No files selected.")
+        return
+
+    # Process each selected file
+    for file_path in file_paths:
+        _, ext = os.path.splitext(file_path)
+        if ext.lower() == '.json':
+            json_filename = file_path
+            print(f"Selecting JSON file: {file_path}\n")
+            break
+
+        else:
+            print(f"Ignoring non-JSON file: {file_path}\n")
+    if not json_filename:
+        raise FileNotFoundError("No JSON selected.")
+
+    return json_filename
+
 def ask_for_input():
     
     while 1:
@@ -91,7 +125,7 @@ def ask_for_input():
 def main():
     # Change this to yours, make sure it is in same directory you are running
     # this from or just point to it directly via C:/full/path/here DO NOT USE BACKSLASH PLEASE
-    file = 'infinitecraft (77).json'
+    file = find_files()
     
     filedata = FileData(file)
     
