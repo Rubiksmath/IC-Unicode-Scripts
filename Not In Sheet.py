@@ -29,7 +29,9 @@ class FileData():
 
         with open('unobtained_characters.txt', 'w', encoding='utf-8') as f:
             for name, unicode_hex in self.unobtained_characters:
-                f.write(f'{name}: {unicode_hex}\n')
+                s = f'{name}: {unicode_hex}\n'
+                f.write(s)
+                print(end=s)
 
 def select_files(filetypes):
     """Open a file dialog to select multiple files and return a list of file paths."""
