@@ -68,14 +68,17 @@ This script tells you all the characters you have in your save that aren't in th
    - The results are then printed to screen in the same place you ran it from (e.g. IDLE shell or command line shell). Additionally, the results are also written to a .txt file called `undocumendted_characters.txt`, which is saved in the same directory you ran the script from. Note that if you ran from command line, it might end up in the same folder as the Python executable file itself, so make sure to check there if you can't find it. In any case, the printed output to the screen is identical to what is saved in the file, so if you can't find the file, you can just use the printed output instead.
 ## Undoc_chars_auto
 ### Steps to run:
-1. **Check settings in code**
+1. **Install Requests Module**
+   - Open a terminal and type in `pip install requests`
+   - This should hopefully install the `requests` module to allow you to download sheet automatically, if you have python set in PATH when you first installed it.
+2. **Check settings in code**
    - Open the file with an IDE like IDLE or Visual Studio and scroll to the top where the parameter `AUTO_DOWNLOAD` should be visible.
    - Set this to whatver you prefer. `True` or `1` will make it download the database automatically, and `False` or `0` will make it ask you for the database files.
    - Scroll down to `def download_files():`
    - Check the `"filenames"` parameters for the database files - if you want them to be saved as another name, change the `"filenames"` parameters accordingly.
-2. **Run Script***
+3. **Run Script***
    - From the IDE (or command line if you prefer) - the script should be able to be run like described for the other two scripts.
-3. **Select Save File**
+4. **Select Save File**
    - Once you start the script, a window should pop up asking for the save file. Click on the save file you want to use, and then press Open.
    - You must select a JSON file or else the script will error and exit.
    - That's it! (provided `AUTO_DOWNLOAD` is set to `True` or `1`)
