@@ -8,11 +8,6 @@ class ElementData(TypedDict, total=False):
     recipes: List[Tuple[str, str]]  # List of tuples of ingredients
 
 
-def prettify_recipe_list(recipes: list) -> str:
-    """Formats the recipe list for printing."""
-    return '\n'.join([f"{ing1} + {ing2} => {result}" for ing1, ing2, result in recipes])
-
-
 class FileIndexerNoId:
     elements: Dict[str, ElementData]  # Map case-sensitive element string to dictionary containing emoji and all recipes (see ElementData)
     elements_normalised: Dict[str, Set[str]]  # Map case-insensitive element string to list of all encountered casing variants which can then be used to lookup in self.elements dictionary
@@ -20,13 +15,23 @@ class FileIndexerNoId:
     conflicts: Dict[str, Set[str]]  # Store conflicting emojis, mostly a curiosity thing.
     use_emojis: bool  # Flag specifying whether to care about emojis or just discard them. Default is False.
 
-    def __init__(self, initial_items: List ,use_emojis: bool = False):
+    def __init__(self, initial_items: List | Dict, use_emojis: bool = False):
+        # Initialise with blank dictionaries for storage
         self.elements = {}
         self.elements_normalised = {}
         self.recipes_fwd = {}
         self.conflicts = {}
+
+        # Set variables that impact the behaviour
         self.use_emojis = use_emojis
-        for item in initial_items:
+
+        # Add initial items
+        self.add_items(initial_items)
+
+    def add_items(self, items: List | Dict):
+        """Wrapper (is that the right word?) to add all the items from a file, in either dictionary or list form
+        in a single call. """
+        for item in items:
             self.add_item(item)
 
     def add_item(self, item):
@@ -222,13 +227,34 @@ class FileIndexerNoId:
             else:
                 print(f"No items with normalised case '{normalised_name}' found")
 
-
         return recipes_dict
 
 
 
 
 def savefile_to_indexer_noid(file_path: str, use_emojis=False) -> FileIndexerNoId:
+    """Turns the file path you give it into an indexer instance with the initial state loaded. Honestly I don't know
+    why I did it like this, or how hard it would be to change.
+    """
+
+    elements_raw, recipes_raw = get_file_data(file_path)
+
+    indexer = FileIndexerNoId(elements_raw, use_emojis=use_emojis)
+
+    for recipe_result, recipes in recipes_raw.items():
+        for ing1, ing2 in recipes:
+            indexer.add_recipe(ing1, ing2, recipe_result)
+
+    return indexer
+
+
+def get_file_data(file_path: str) -> Tuple[List, Dict]:
+    """Single function to get important file data and return it, including elements and recipes.
+    Raises errors if these are not present or if the savefile is specified. Up to calling function to catch these.
+    Also note, it does not do anything with this data, it just gives it to you. This is so you don't have to
+    do it yourself everytime.
+    """
+
     name, ext = os.path.splitext(file_path)
     if ext != ".json":
         raise ValueError(f"Improper savefile specified. Expected type '.json', but got type '{ext}'")
@@ -245,8 +271,17 @@ def savefile_to_indexer_noid(file_path: str, use_emojis=False) -> FileIndexerNoI
     if not isinstance(recipes_raw, dict):  # Change here to check for dictionary
         raise ValueError("Savefile does not contain a valid 'recipes' dictionary, aborting...")
 
-    indexer = FileIndexerNoId(elements_raw, use_emojis=use_emojis)
+    return elements_raw, recipes_raw
 
+
+def add_file_data_to_indexer(file_path: str, indexer: FileIndexerNoId) -> FileIndexerNoId:
+    """Add file data from file specified by file_path to indexer specified by indexer.
+    I really don't know if I should make it return the indexer or not.
+    """
+
+    # Technically duplicate code here, not sure what to do.
+    elements_raw, recipes_raw = get_file_data(file_path)
+    indexer.add_items(elements_raw)
     for recipe_result, recipes in recipes_raw.items():
         for ing1, ing2 in recipes:
             indexer.add_recipe(ing1, ing2, recipe_result)
