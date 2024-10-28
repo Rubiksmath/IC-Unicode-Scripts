@@ -1,6 +1,6 @@
-from Structure_2.FileIndexerNoId import FileIndexerNoId, savefile_to_indexer_noid
+from Structure_2.FileIndexerNoId import FileIndexerNoId, savefile_to_indexer_noid, add_file_data_to_indexer
 
-def prettify_recipe_list(recipes_data: dict) -> str:
+def prettify_recipe_dict(recipes_data: dict) -> str:
     """Formats the recipe list for printing."""
 
     item_name = recipes_data.get("item", "Unknown Item")
@@ -18,10 +18,16 @@ def prettify_recipe_list(recipes_data: dict) -> str:
 
     return "\n".join(result_lines)
 
+
+def prettify_recipe_list(recipes: list) -> str:
+    """Formats the recipe list for printing."""
+    return '\n'.join([f"{ing1} + {ing2} => {result}" for ing1, ing2, result in recipes])
+
 # Put your actual file here
-indexer = savefile_to_indexer_noid("file_path_here", use_emojis=True)
+indexer = savefile_to_indexer_noid(r"file_1.json", use_emojis=True)
+add_file_data_to_indexer(r"file_2.json", indexer)
 print("Number of elements (most generous total possible):", len(indexer.elements))
 print("Number of elements (normalised, most generous total possible):", len(indexer.elements_normalised))
 #recipes = indexer.get_recipes_list("100%")
 recipes = indexer.get_recipes_dict("100%")
-print(prettify_recipe_list(recipes))
+print(prettify_recipe_dict(recipes))
