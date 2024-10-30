@@ -101,17 +101,17 @@ def download_files():
     csv_filenames = []
     files_to_download = [
         {
-            "url": "https://docs.google.com/spreadsheets/d/1PRtlXvjbHs4ulct6gSbYc6VYrQegU7HZ5SdhThkHuoY/export?format=csv&gid=1097900412",
+            "url": "https://docs.google.com/spreadsheets/d/1PRtlXvjbHs4ulct6gSbYc6VYrQegU7HZ5SdhThkHuoY/export?format=csv&gid=1586918317",
             "filename": "Unicode Characters Auto.csv"
         },
         {
-            "url": "https://docs.google.com/spreadsheets/d/1PRtlXvjbHs4ulct6gSbYc6VYrQegU7HZ5SdhThkHuoY/export?format=csv&id=1PRtlXvjbHs4ulct6gSbYc6VYrQegU7HZ5SdhThkHuoY&gid=613808374",
+            "url": "https://docs.google.com/spreadsheets/d/1PRtlXvjbHs4ulct6gSbYc6VYrQegU7HZ5SdhThkHuoY/export?format=csv&gid=2129412547",
             "filename": "Hangul Auto.csv"
         },
         {
-            "url": "https://docs.google.com/spreadsheets/d/1PRtlXvjbHs4ulct6gSbYc6VYrQegU7HZ5SdhThkHuoY/export?format=csv&id=1PRtlXvjbHs4ulct6gSbYc6VYrQegU7HZ5SdhThkHuoY&gid=1626681424",
+            "url": "https://docs.google.com/spreadsheets/d/1PRtlXvjbHs4ulct6gSbYc6VYrQegU7HZ5SdhThkHuoY/export?format=csv&gid=1446897313",
             "filename": "CJK Unified Ideographs Auto.csv"
-        }
+        } 
     ]
 
     for file_info in files_to_download:
